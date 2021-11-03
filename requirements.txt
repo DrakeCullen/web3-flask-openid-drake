@@ -1,5 +1,10 @@
-requests==2.21.0
 Flask==1.0.2
+gunicorn==19.3.0
+itsdangerous==0.24
+Jinja2==2.7.3
+MarkupSafe==0.23
+Werkzeug>=0.14
+requests==2.21.0
 oauthlib==3.0.1
 pyOpenSSL==19.0.0
 Flask-Login==0.4.1

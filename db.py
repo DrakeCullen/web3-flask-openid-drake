@@ -19,12 +19,17 @@ def close_db(e=None):
         db.close()
 
 CREATE_USERTABLE=f"""
-CREATE TABLE IF NOT EXISTS usertable (id TEXT PRIMARY KEY, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, profile_pic TEXT NOT NULL, role TEXT);
+CREATE TABLE IF NOT EXISTS usertable (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  profile_pic TEXT NOT NULL,
+  role TEXT
+);
 """
 
 def init_db():
     db = get_db()
-    
     db.executescript(CREATE_USERTABLE)
 
 @click.command("init-db")

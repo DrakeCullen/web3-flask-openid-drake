@@ -1,15 +1,15 @@
-# web3-flask-openid-drake
+# web3-flask-openid-fall2021
 
-Privacy page link: https://drakecullen.github.io/web3-flask-openid-drake/privacy.html
+# This was copied from:
 
-Terms page link: https://drakecullen.github.io/web3-flask-openid-drake/terms.html
+https://github.com/leah/hello-flask-heroku
+
+
 
 GitHub Pages for /docs:
-https://drakecullen.github.io/web3-flask-openid-drake/
+https://wmacevoy.github.io/web3-flask-openid-fall2021/
 
 Heroku Flask app:
-https://web3-flask-openid-drake.herokuapp.com/ 
+https://web3-flask-openid-fall2021.herokuapp.com/
 
-Client id: 1056859741758-g05ek2corahp65vmlelfh6ie01iukmsn.apps.googleusercontent.com
-
-Client secret: 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
+https://realpython.com/flask-google-login/

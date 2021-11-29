@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from db import get_db
 
 class User(UserMixin):
-    ROLES=['user', 'admin']
+    ROLES=['user','admin']
     DEFAULT_ROLE='user'
     def __init__(self, id_, name, email, profile_pic, role):
         self.id = id_

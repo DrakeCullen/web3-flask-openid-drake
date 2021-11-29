@@ -2,6 +2,7 @@
 import json
 import os
 import sqlite3
+import logging
 
 # Third-party libraries
 from flask import Flask, redirect, request, url_for
@@ -28,6 +29,7 @@ GOOGLE_DISCOVERY_URL = (
 
 # Flask app setup
 app = Flask(__name__)
+
 app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
 
 # User session management setup
@@ -72,6 +74,11 @@ def login():
     # Find out what URL to hit for Google login
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
+
+    base_url = request.base_url
+    
+    if base_url.startswith("http:"):
+        base_url = "https:" + base_url[len("http:")]
 
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google

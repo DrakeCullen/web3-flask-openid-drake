@@ -11,8 +11,8 @@ fi
 
 conda activate ./env
 
-export GOOGLE_CLIENT_ID=$(cat ../web3-flask-openid-fall2021-private/google_client_id.txt)
-export GOOGLE_CLIENT_SECRET=$(cat ../web3-flask-openid-fall2021-private/google_client_secret.txt)
+export GOOGLE_CLIENT_ID=$(cat ../web3-flask-openid-drake-private/google_client_id.txt)
+export GOOGLE_CLIENT_SECRET=$(cat ../web3-flask-openid-drake-private/google_client_secret.txt)
 
 python ./app.py
 

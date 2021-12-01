@@ -2,7 +2,6 @@
 import json
 import os
 import sqlite3
-import logging
 
 # Third-party libraries
 from flask import Flask, redirect, request, url_for
@@ -19,6 +18,8 @@ import requests
 # Internal imports
 from db import init_db_command
 from user import User
+import logging
+import sys
 
 # Configuration
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
@@ -30,6 +31,8 @@ GOOGLE_DISCOVERY_URL = (
 # Flask app setup
 app = Flask(__name__)
 
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.INFO)
 app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
 
 # User session management setup
@@ -70,31 +73,27 @@ def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
 
 def httpsify(url):
-    base_url = url
-    if base_url.startswith("http:"):
-        base_url = "https:" + base_url[len("http:")]
-    return base_url
+    https_url = url
 
+    if https_url.startswith("http:"):
+        https_url = "https:" + https_url[len("http:"):]
+    return https_url
 
 @app.route("/login")
 def login():
     # Find out what URL to hit for Google login
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
-
-    base_url = request.base_url
-    
     
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri= httpsify(request.url)+ "/callback",
+        redirect_uri=httpsify(request.base_url) + "/callback",
         scope=["openid", "email", "profile"],
     )
     app.logger.info('login redirect: %s', request_uri)
     return redirect(request_uri)
-
 
 @app.route("/login/callback")
 def callback():
@@ -105,6 +104,8 @@ def callback():
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
     # Prepare and send a request to get tokens! Yay tokens!
+
+        
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=httpsify(request.url),

@@ -69,6 +69,13 @@ def index():
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
 
+def httpsify(url):
+    base_url = url
+    if base_url.startswith("http:"):
+        base_url = "https:" + base_url[len("http:")]
+    return base_url
+
+
 @app.route("/login")
 def login():
     # Find out what URL to hit for Google login
@@ -77,18 +84,17 @@ def login():
 
     base_url = request.base_url
     
-    if base_url.startswith("http:"):
-        base_url = "https:" + base_url[len("http:")]
-
+    
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri= base_url + "/callback",
+        redirect_uri= httpsify(request.url)+ "/callback",
         scope=["openid", "email", "profile"],
     )
     app.logger.info('login redirect: %s', request_uri)
     return redirect(request_uri)
+
 
 @app.route("/login/callback")
 def callback():
@@ -101,8 +107,8 @@ def callback():
     # Prepare and send a request to get tokens! Yay tokens!
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
-        authorization_response=request.url,
-        redirect_url=request.base_url,
+        authorization_response=httpsify(request.url),
+        redirect_url=httpsify(request.base_url),
         code=code
     )
     token_response = requests.post(

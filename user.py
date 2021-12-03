@@ -17,7 +17,7 @@ class User(UserMixin):
         db = get_db()
         cursor = db.cursor()
         user = cursor.execute(
-            "SELECT * FROM user WHERE id = (%s)", (user_id,)
+            "SELECT * FROM usertable WHERE id = (%s)", (user_id,)
         ).fetchone()
         cursor.close()
         if not user:
@@ -32,8 +32,8 @@ class User(UserMixin):
     def create(id_, name, email, profile_pic, role):
         db = get_db()
         db.execute(
-            "INSERT INTO user (id, name, email, profile_pic, role) "
-            "VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO usertable (id, name, email, profile_pic, role) "
+            "VALUES (%s) (%s) (%s) (%s) (%s)",
             (id_, name, email, profile_pic, role),
         )
         db.commit()

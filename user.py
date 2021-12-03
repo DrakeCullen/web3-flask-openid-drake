@@ -35,7 +35,7 @@ class User(UserMixin):
         cursor = db.cursor()
         cursor.execute(
             "INSERT INTO usertable (id, name, email, profile_pic, role) "
-            "VALUES (%s) (%s) (%s) (%s) (%s)",
+            "VALUES (%s, %s, %s, %s, %s)",
             (id_, name, email, profile_pic, role),
         )
         cursor.commit()

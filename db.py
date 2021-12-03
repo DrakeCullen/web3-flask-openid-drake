@@ -9,7 +9,7 @@ from flask.cli import with_appcontext
 def get_db():
     DATABASE_URL = os.environ.get('DATABASE_URL')
     g.db = psycopg2.connect(DATABASE_URL)
-
+    current_app.logger.info('database connected to: %s', DATABASE_URL)
     return g.db
 
 def close_db(e=None):

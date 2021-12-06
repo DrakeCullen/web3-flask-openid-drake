@@ -17,9 +17,9 @@ class User(UserMixin):
         db = get_db()
         cursor = db.cursor()
         user = cursor.execute(
-            "SELECT * FROM usertable WHERE id = (%s)", (user_id,)
+            "SELECT * FROM usertable WHERE id = %s", (user_id,)
         )
-        user = cursor.fetchone()
+        user=cursor.fetchone()
         cursor.close()
         if not user:
             return None
@@ -32,10 +32,11 @@ class User(UserMixin):
     @staticmethod
     def create(id_, name, email, profile_pic, role):
         db = get_db()
-        cursor = db.cursor()
+        cursor=db.cursor()
         cursor.execute(
             "INSERT INTO usertable (id, name, email, profile_pic, role) "
             "VALUES (%s, %s, %s, %s, %s)",
             (id_, name, email, profile_pic, role),
         )
         cursor.close()
+        db.commit()
